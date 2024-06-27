@@ -1,11 +1,5 @@
-import {
-  Post,
-  Comment,
-  PostManager,
-  CommentsManager,
-  Subscriber,
-  Publisher,
-} from "./post-model";
+import { Post, Comment, PostManager, CommentsManager } from "./post-model";
+import { Subscriber, Publisher } from "./pub-sub";
 
 const testPosts: Post[] = [
   {

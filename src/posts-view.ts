@@ -1,12 +1,8 @@
 // view
 import "./style.css";
 import "./posts.css";
-import {
-  Subscriber,
-  Publisher,
-  PostManager,
-  CommentsManager,
-} from "./post-model";
+import { PostManager, CommentsManager } from "./post-model";
+import { Subscriber, Publisher } from "./pub-sub";
 export class PostView implements Subscriber {
   postTitleElement: HTMLHeadingElement | null = null;
   postDescription: HTMLParagraphElement | null = null;
@@ -88,7 +84,7 @@ export class PostView implements Subscriber {
       }
     }
     if (manager instanceof CommentsManager) {
-      let modelStatus = manager.commentModelStatus;
+      let modelStatus = manager.modelStatus;
       switch (modelStatus) {
         case "available": {
           this.commentsDisplay.innerHTML = manager.comments.reduce(
