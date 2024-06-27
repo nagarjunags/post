@@ -1,24 +1,11 @@
-import './style.css';
-import './posts.css';
-import typescriptLogo from './typescript.svg';
-import viteLogo from '/vite.svg';
-import { setupCounter } from './counter.ts';
-
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div class="container">
-  <section>
-  <nav>
-   <button>< previous</button>
-   <h2>Post title</h2>
-   <button>next ></button>
-  </nav>
-  <p class="post-desc"> Post description</p>
-    </section>
-      <section>
-      <button> View Comments </button>
-      <p class="comments">Comments of current post go here</p>
-  </section>
-  </div>
-`;
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!);
+import { PostView } from "./posts-view";
+import { CommentsManager, PostManager } from "./post-model";
+import { PostController } from "./posts-controller";
+const postView = new PostView();
+const postManager = new PostManager();
+const commentManager = new CommentsManager();
+const postController = new PostController(
+  postView,
+  postManager,
+  commentManager
+);
