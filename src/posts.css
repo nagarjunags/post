@@ -3,22 +3,37 @@
   margin-right: auto;
   max-width: 1024px;
   padding: 10px 20px;
-}
 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  white-space: nowrap;
-
   margin-bottom: 2rem;
+  align-items: center;
 }
-
 .post-desc {
   font-size: 1.5rem;
   margin-bottom: 2rem;
 }
-
 .comments {
   margin-top: 30px;
+}
+button {
+  padding: 10px 20px; /* Padding for top/bottom and left/right */
+  font-size: 16px; /* Font size for the text inside the button */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Border style */
+  background-color: #f0f0f0; /* Background color */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+  width: 150px; /* Fixed width */
+  box-sizing: border-box;
+}
+nav button {
+  width: 100px; /* Fixed width */
+  margin: 10px; /* Space around buttons */
+  flex-shrink: 0;
+  flex-basis: 85px;
 }

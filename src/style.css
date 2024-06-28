@@ -60,3 +60,6 @@ h6 {
 #__next {
   isolation: isolate;
 }
+h2 {
+  line-height: 1.5;
+}

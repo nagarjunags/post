@@ -14,23 +14,36 @@ export class PostController {
     function handlePrevious(): void {
       postManager.previousPostIndex();
       postView.update(postManager);
+
+      postView.prevButton.disabled = postManager.currentPostIndex === 0;
     }
     function handleNext(): void {
       postManager.nextPostIndex();
       postView.update(postManager);
+      if (postManager.currentPostIndex === 100) postView.nextButton.disabled;
     }
     const handelComments = () => {
-      commentManager.setModelStatus("pending");
-      postView.update(commentManager);
-      this.fetchComments(postManager.currentPostIndex + 1).then((comments) => {
-        console.log(comments);
-        commentManager.insertCommentsForPost(
-          comments,
-          postManager.currentPostIndex + 1
-        );
+      if (commentManager.subscribers.includes(postView)) {
+        commentManager.unsubscribe(postView);
+        postView.commentsDisplay.innerHTML = "";
         postView.update(commentManager);
-        // console.log(commentManager.commentsMap);
-      });
+      } else {
+        commentManager.unsubscribe(postView);
+        commentManager.setModelStatus("pending");
+        postView.update(commentManager);
+        this.fetchComments(postManager.currentPostIndex + 1).then(
+          (comments) => {
+            console.log(comments);
+            commentManager.insertCommentsForPost(
+              comments,
+              postManager.currentPostIndex + 1
+            );
+            postView.update(commentManager);
+            // console.log(commentManager.commentsMap);
+          }
+        );
+      }
+      postView.update(commentManager);
     };
     postManager.subscribe(postView);
     //setup event handlers for prev and next buttons.

@@ -10,11 +10,14 @@ export class PostView implements Subscriber {
   nextButton: HTMLButtonElement | null = null;
   commentButton: HTMLButtonElement | null = null;
   commentsDisplay: HTMLParagraphElement | null = null;
+  postIndexDisplay: HTMLParagraphElement | null = null;
+
   constructor() {
     document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div class="container">
   <section>
   <nav>
+    
     <button data-testid="prev-button">< Previous</button>
     <h2></h2>
     <button data-testid="next-button">Next ></button>
@@ -22,6 +25,7 @@ export class PostView implements Subscriber {
     <p class="post-desc" data-testid="post-desc"></p>
     </section>
     <section>
+    <p data-testid="post-index"></p>
     <button data-testid="comment-button">View Comments</button>
     <p class="comments"  data-testid="comments-p">comments of current post goes here</p>
     </section>
@@ -35,6 +39,10 @@ export class PostView implements Subscriber {
       '[data-testid="comment-button"]'
     );
     this.commentsDisplay = document.querySelector('[data-testid="comments-p"]');
+    this.postIndexDisplay = document.querySelector(
+      '[data-testid="post-index"]'
+    );
+
     // this.commentsDisplay.innerHTML = "";
     console.assert(this.postTitleElement !== null);
     console.assert(this.postDescription !== null);
@@ -44,6 +52,7 @@ export class PostView implements Subscriber {
   }
   update(manager: Publisher) {
     this.commentsDisplay.innerHTML = "";
+
     if (manager instanceof PostManager) {
       //check if model is in aveleble state, if then consume data
       //if status is pending then some one is initiated fetch
@@ -51,16 +60,19 @@ export class PostView implements Subscriber {
       //time to fetch in this case is unknown so show some spinning item or loading
       //if the model goes into failure, that also should be shown to user
       const modelStatus = manager.getModelStatus();
+      const postNumber: number = manager.currentPostIndex + 1;
       switch (modelStatus) {
         case "available": {
           const post = manager.currentPost();
           if (this.postTitleElement !== null) {
-            this.postTitleElement.textContent =
-              post?.title ?? "title is missing";
+            this.postTitleElement.innerHTML = post?.title ?? "title is missing";
           }
           if (this.postDescription) {
             this.postDescription.textContent = post?.title ?? "body is missing";
           }
+          this.prevButton.disabled = manager.currentPostIndex === 0;
+          this.nextButton.disabled = manager.currentPostIndex === 100;
+          this.postIndexDisplay.innerHTML = `Showing Post:${manager.currentPostIndex}/100<br><br>`;/////////
           break;
         }
         case "pending": {
